@@ -2,9 +2,9 @@ from exchange.bitFlyer import bitFlyer
 import json
 import csv
 
-product_code = 'BTC_JPY'
-exchange = bitFlyer(product_code)
-transactionHistory = exchange.getTransactionHistory()
+productCode = 'BTC_JPY'
+exchange = bitFlyer()
+transactionHistory = exchange.getTransactionHistory(productCode)
 
 transactionHistoryFile = open('./transactionHistory_bitFlyer.csv', 'w')
 
