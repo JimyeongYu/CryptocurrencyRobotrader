@@ -2,18 +2,25 @@ import json
 import requests
 
 class bitFlyer():
-    def __init__(self, product_code):
+    def __init__(self):
         self.baseURL='https://api.bitflyer.jp/'
-        self.product_code = product_code
 
-    def getCurrentAskBid(self):
-        self.getBoardURL = self.baseURL + 'v1/getboard?product_code=' + self.product_code
-        boardJSON = requests.get(self.getBoardURL).json()
-        maxBid = boardJSON['bids'][0]['price']
-        minAsk = boardJSON['asks'][0]['price']
-        return (maxBid, minAsk)
+    def getCurrentAskBid(self, productCode):
+        self.getTickerURL = self.baseURL + 'v1/getticker?product_code=' + productCode
+        tickerJSON = requests.get(self.getTickerURL).json()
+        minAsk = tickerJSON['best_ask']
+        maxBid = tickerJSON['best_bid']
+        spread = round((minAsk - maxBid) / ((minAsk + maxBid) / 2) * 10000, 2)
+        return (minAsk, maxBid, spread)
 
-    def getTransactionHistory(self):
-        self.getTransactionHistoryURL = self.baseURL + 'v1/getexecutions?product_code=' + self.product_code
-        TransactionHistoryJSON = requests.get(self.getTransactionHistoryURL).json()
-        return TransactionHistoryJSON
+    def getTransactionHistory(self, productCode):
+        self.getTransactionHistoryURL = self.baseURL + 'v1/getexecutions?product_code=' + productCode
+        transactionHistoryJSON = requests.get(self.getTransactionHistoryURL).json()
+        return transactionHistoryJSON
+
+    def getBoardStatus(self, productCode):
+        self.getBoardStatusURL = self.baseURL + 'v1/getboardstate?product_code=' + productCode
+        boardStatusJSON = requests.get(self.getBoardStatusURL).json()
+        health = boardStatusJSON['health']
+        state = boardStatusJSON['state']
+        return (health, state)
