@@ -29,7 +29,7 @@ def initializeCSV(fileName):
     csvwriter.writerow(header)
     CSVFile.close()
 
-print('取引所名を入力してください。(bitFlyer, coincheck, quoine or Zaif)')
+print('Enter exchange name. (bitFlyer, coincheck, quoine or Zaif)')
 exchange_name = input('>> ')
 
 if exchange_name == 'bitFlyer':
