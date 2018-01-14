@@ -2,8 +2,12 @@ import sched
 import time
 from datetime import datetime
 from exchange.bitFlyer import bitFlyer
+from exchange.coincheck import coincheck
+from exchange.quoine import quoine
+from exchange.Zaif import Zaif
 import csv
 import os.path
+import sys
 
 def getPrice(exchangeObject, productCode):
     (ask, bid, spread) = exchangeObject.getCurrentAskBid(productCode)
@@ -25,10 +29,28 @@ def initializeCSV(fileName):
     csvwriter.writerow(header)
     CSVFile.close()
 
+print('取引所名を入力してください。(bitFlyer, coincheck or quoine)')
+exchange_name = input('>> ')
+
+if exchange_name == 'bitFlyer':
+    exchangeObject = bitFlyer()
+    fileName = 'marketHistory_bitFlyer.csv'
+elif exchange_name == 'coincheck':
+    exchangeObject = coincheck()
+    fileName = 'marketHistory_coincheck.csv'
+elif exchange_name == 'quoine':
+    exchangeObject = quoine()
+    fileName = 'marketHistory_quoine.csv'
+elif exchange_name == 'Zaif':
+    exchangeObject = Zaif()
+    fileName = 'marketHistory_Zaif.csv'
+else:
+    print('Unexpected String:' + str(datetime.now()))
+    sys.exit()
+
 productCode = 'BTC_JPY'
-exchangeObject = bitFlyer()
-endDatetime = datetime(2018, 1, 6, 17, 27)
-fileName = 'marketHistory_bitFlyer.csv'
+endDatetime = datetime(2020, 12, 31, 23, 59)
+
 if os.path.exists(fileName) == False:
     initializeCSV(fileName)
 print('START:' + str(datetime.now()))
