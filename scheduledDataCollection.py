@@ -14,8 +14,7 @@ def getPrice(exchangeObject, productCode):
     (health, state) = exchangeObject.getBoardStatus(productCode)
     now = datetime.now()
     saveToCSV(fileName, now, ask, bid, spread, health, state)
-    print('EVENT:' + str(now) + ' ' + exchangeObject.__class__.__name__ + ' ' + productCode + ' Ask=' + str(ask) + ' Bid = ' + str(bid) + ' spread = ' + str(spread) +'bps')
-
+    
 def saveToCSV(fileName, time, ask, bid, spread, health, state):
     marketHistoryFile = open(fileName, 'a')
     csvwriter = csv.writer(marketHistoryFile, lineterminator='\n')
